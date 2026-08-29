@@ -33,6 +33,9 @@
   },
   "scripts": {
     "start": "expo start",
+    "dev": "bash ./scripts/dev-mobile.sh",
+    "android:open": "bash ./scripts/open-android.sh",
+    "android:stop": "$HOME/Library/Android/sdk/platform-tools/adb emu kill",
     "reset-project": "node ./scripts/reset-project.js",
     "android": "expo start --android",
     "ios": "expo start --ios",
