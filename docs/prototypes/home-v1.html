@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark light">
+  <title>마실 · 홈 시안 01</title>
+  <style>
+    @font-face {
+      font-family: Pretendard;
+      src: url("assets/Pretendard-Regular.woff2") format("woff2");
+      font-weight: 400;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: Pretendard;
+      src: url("assets/Pretendard-SemiBold.woff2") format("woff2");
+      font-weight: 600;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: Mulgyeol;
+      src: url("assets/TTHakgyoansimMulgyeolB.woff2") format("woff2");
+      font-weight: 700;
+      font-display: swap;
+    }
+    :root {
+      --background: #080a08;
+      --foreground: #f2f0e9;
+      --muted: #aaa9a4;
+      --border: #313630;
+      --accent: #6bc670;
+    }
+    * { box-sizing: border-box; }
+    html { font-size: 16px; }
+    body {
+      margin: 0;
+      background: var(--background);
+      color: var(--foreground);
+      font-family: Pretendard, sans-serif;
+      font-weight: 400;
+      -webkit-font-smoothing: antialiased;
+    }
+    h1, h2, h3, p { margin: 0; }
+    h1, h2, h3 { font-weight: 600; word-break: keep-all; overflow-wrap: anywhere; }
+    .review { display: none; }
+    .home { width: 100%; max-width: 430px; margin-inline: auto; }
+    .content { padding: 0 24px; }
+    .status {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 16px 28px 10px;
+      font-size: .875rem; font-weight: 600;
+    }
+    .status svg { width: 62px; height: 14px; }
+    .wordmark { font-family: Mulgyeol, sans-serif; font-weight: 700; color: var(--accent); font-size: 1.875rem; }
+    .sample-label { margin-left: auto; color: var(--muted); font-size: .6875rem; font-weight: 400; letter-spacing: .04em; }
+    .intro { padding: 27px 0 30px; }
+    .intro h1 { font-size: 2rem; line-height: 1.3; letter-spacing: -.055em; }
+    .intro .signature { font-family: Mulgyeol, sans-serif; font-weight: 700; color: var(--accent); font-size: 2.5rem; }
+    .intro p { margin-top: 16px; color: var(--muted); font-size: .875rem; line-height: 1.6; letter-spacing: -.02em; }
+    .section-heading {
+      display: flex; align-items: center; gap: 9px;
+      margin-bottom: 16px; font-size: .8125rem; line-height: 1.5; letter-spacing: -.015em;
+    }
+    .section-heading::before { content: ""; width: 5px; height: 5px; border-radius: 50%; background: var(--accent); }
+    .cover {
+      display: flex; justify-content: center; align-items: center;
+      height: 178px; background: #dfe3d5; border-radius: 4px;
+      overflow: hidden;
+    }
+    .cover img { display: block; width: 212px; height: 212px; object-fit: contain; }
+    .featured h3 { margin-top: 20px; font-size: 1.625rem; line-height: 1.4; letter-spacing: -.045em; }
+    .description { margin-top: 10px; color: var(--muted); font-size: .9375rem; line-height: 1.7; word-break: keep-all; overflow-wrap: anywhere; letter-spacing: -.02em; }
+    .byline { margin-top: 18px; color: var(--muted); font-size: .75rem; line-height: 1.5; }
+    .byline span { color: var(--foreground); }
+    .stories { margin-top: 30px; padding-top: 25px; border-top: 1px solid var(--border); }
+    .stories .section-heading { margin-bottom: 4px; }
+    .story { padding: 22px 0; border-bottom: 1px solid var(--border); }
+    .story h3 { font-size: 1.125rem; line-height: 1.5; letter-spacing: -.025em; }
+    .story .description { margin-top: 6px; font-size: .875rem; }
+    .story .byline { margin-top: 12px; }
+    .closing { padding: 35px 0 40px; text-align: center; color: var(--muted); font-size: .75rem; line-height: 1.7; }
+    .closing .wordmark { display: block; margin-bottom: 10px; font-size: 1.5rem; }
+    @media (min-width: 760px) {
+      body { background: #e5e7df; }
+      .stage { display: flex; align-items: flex-start; justify-content: center; gap: 88px; padding: 64px 36px; }
+      .review { display: block; width: 260px; padding-top: 92px; color: #263229; }
+      .review .eyebrow { font-size: .75rem; letter-spacing: .12em; }
+      .review h2 { margin-top: 24px; font-size: 1.875rem; line-height: 1.5; letter-spacing: -.04em; }
+      .review p { margin-top: 24px; font-size: .875rem; line-height: 1.8; word-break: keep-all; }
+      .review ol { padding-left: 18px; margin-top: 28px; font-size: .875rem; line-height: 2; }
+      .review .note { padding-top: 20px; border-top: 1px solid #bbc2b7; color: #56624f; font-size: .75rem; }
+      .home { flex: 0 0 390px; margin: 0; background: var(--background); border: 1px solid #313630; border-radius: 32px; overflow: hidden; }
+    }
+    @media (max-width: 359px) {
+      .content { padding-inline: 20px; }
+      .intro h1 { font-size: 1.8rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="stage">
+    <aside class="review" aria-label="시안 안내">
+      <p class="eyebrow">MASIL / HOME STUDY 01</p>
+      <h2>일과 삶 사이,<br>이야기가 머무는 곳.</h2>
+      <p>마실의 첫인상에서 시작해<br>한 편의 이야기로 이어지는 홈.</p>
+      <ol>
+        <li>브랜드 영역의 크기와 분위기</li>
+        <li>대표 글의 이미지와 제목 비율</li>
+        <li>다음 글로 이어지는 읽기 흐름</li>
+      </ol>
+      <p class="note">스크롤하며 구성을 확인하는 시각 시안입니다. 모든 글은 예시이며, 글 선택과 화면 이동은 연결하지 않았습니다. 모바일 너비에서는 홈 화면만 표시됩니다.</p>
+    </aside>
+    <main class="home" aria-label="마실 홈 시안">
+      <!-- 시안용 상태 표시줄. 실제 앱에서는 운영체제의 상태 표시줄을 사용한다. -->
+      <div class="status" aria-hidden="true">
+        <span>9:41</span>
+        <svg viewBox="0 0 62 14" fill="currentColor">
+          <path d="M0 10h3v4H0zm5-3h3v7H5zm5-3h3v10h-3zm5-3h3v13h-3z"/>
+          <path d="M22 4a11 11 0 0 1 15 0l-1.5 1.6a8.8 8.8 0 0 0-12 0zm3 3.3a6.6 6.6 0 0 1 9 0L32.5 9a4.4 4.4 0 0 0-6 0zm3 3.2a2.2 2.2 0 0 1 3 0L29.5 12z"/>
+          <rect x="42" y="2" width="17" height="10" rx="2" fill="none" stroke="currentColor"/>
+          <rect x="44" y="4" width="13" height="6" rx="1"/>
+          <path d="M60 5h2v4h-2z"/>
+        </svg>
+      </div>
+      <div class="content">
+        <section class="intro" aria-labelledby="intro-title">
+          <h1 id="intro-title">일과 삶 사이,<br>잠깐 <span class="signature">마실.</span></h1>
+          <p>각자의 속도로 살아가는 우리의 이야기.</p>
+        </section>
+        <section class="featured" aria-labelledby="featured-heading">
+          <h2 class="section-heading" id="featured-heading">먼저 읽어볼 이야기 <span class="sample-label">예시 콘텐츠</span></h2>
+          <article>
+            <div class="cover">
+              <img src="assets/img-community-cutout.png" alt="커피를 들고 잠시 산책하는 사람의 일러스트" width="212" height="212">
+            </div>
+            <h3>잠깐 멈췄을 때,<br>비로소 보이는 것들</h3>
+            <p class="description">바쁘게 일하던 사람이 자기만의 속도를 찾아가는 이야기. 쉼도 우리 일의 일부니까요.</p>
+            <p class="byline"><span>마실 에디터</span>의 이야기</p>
+          </article>
+        </section>
+        <section class="stories" aria-labelledby="stories-heading">
+          <h2 class="section-heading" id="stories-heading">더 읽어볼 이야기</h2>
+          <article class="story">
+            <h3>일의 기준을,<br>다시 나에게 맞추는 연습</h3>
+            <p class="description">남의 정답을 따라가던 시간을 지나, 나에게 맞는 일을 묻기 시작했어요.</p>
+            <p class="byline"><span>마실 에디터</span>의 이야기</p>
+          </article>
+          <article class="story">
+            <h3>퇴근길에 발견한 작은 취향들</h3>
+            <p class="description">늘 걷던 길에서 한 블록 벗어났을 뿐인데, 하루의 표정이 달라졌어요.</p>
+            <p class="byline"><span>마실 에디터</span>의 이야기</p>
+          </article>
+        </section>
+        <footer class="closing">
+          <span class="wordmark" aria-hidden="true">마실</span>
+          나만의 속도로 읽는 이야기
+        </footer>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

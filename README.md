@@ -35,7 +35,7 @@ pnpm start
 | `pnpm android` | Expo 개발 서버를 시작하고 Android에서 열기 |
 | `pnpm web` | 웹 미리보기 실행 |
 
-웹 미리보기와 별도로 iOS·Android에서 화면과 동작을 확인한다. 실제 검증 결과는 [PLAN.md](./PLAN.md)에 기록한다.
+웹 미리보기와 별도로 iOS·Android에서 화면과 동작을 확인한다. 단계별 완료 기준과 진행 상태는 [PLAN.md](./PLAN.md)에서 확인한다.
 
 ### macOS용 보조 스크립트
 
