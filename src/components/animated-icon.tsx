@@ -1,6 +1,6 @@
+import { useState } from 'react';
 import { Image } from 'expo-image';
 import * as SplashScreen from 'expo-splash-screen';
-import { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import Animated, { Easing, Keyframe } from 'react-native-reanimated';
 import { scheduleOnRN } from 'react-native-worklets';
@@ -32,7 +32,12 @@ export function AnimatedSplashOverlay() {
     },
   });
 
-  const image = <Image style={styles.image} source={require('@/assets/images/expo-logo.png')} />;
+  const image = (
+    <Image
+      style={styles.image}
+      source={require('@/assets/images/expo-logo.png')}
+    />
+  );
 
   return animate ? (
     <Animated.View
@@ -42,7 +47,8 @@ export function AnimatedSplashOverlay() {
           scheduleOnRN(setVisible, false);
         }
       })}
-      style={styles.splashOverlay}>
+      style={styles.splashOverlay}
+    >
       {image}
     </Animated.View>
   ) : (
@@ -52,7 +58,8 @@ export function AnimatedSplashOverlay() {
           setAnimate(true);
         });
       }}
-      style={styles.splashOverlay}>
+      style={styles.splashOverlay}
+    >
       {image}
     </View>
   );
