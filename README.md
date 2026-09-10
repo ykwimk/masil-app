@@ -5,7 +5,7 @@ React 웹 개발 경험을 바탕으로 React Native, 네이티브와 WebView의
 
 ## 현재 상태
 
-제품·디자인·개발 계획의 문서 초안을 정리한 단계다. 코드는 Expo 기본 화면과 기기 실행 스크립트로 구성되어 있으며, 마실 화면·WebView 통신·어드민·서버는 아직 구현하지 않았다.
+제품·디자인·개발 계획의 문서 초안을 정리하고, 홈 화면에 더미 글의 제목·설명·에디터를 표시했다. 브랜드 시안 적용·상세 화면·WebView 통신·어드민·서버는 아직 구현하지 않았다.
 
 더미 데이터로 앱의 핵심 읽기 흐름을 먼저 만들고 콘텐츠 형식을 검토한다. 이후 새 어드민과 서버를 만들고 실제 콘텐츠를 연결한다. 구체적인 기능과 기술 후보는 문서에서 확정 사항과 구분한다.
 
@@ -46,7 +46,7 @@ pnpm start
 
 ## 코드 위치
 
-- [src/app](./src/app): Expo Router 화면과 레이아웃. 기본 화면은 `index.tsx`, `explore.tsx`에 있다.
+- [src/app](./src/app): Expo Router 화면과 레이아웃. 홈 화면은 `index.tsx`, 루트 레이아웃은 `_layout.tsx`에 있다.
 - [src/components](./src/components): UI 컴포넌트.
 - [src/constants](./src/constants): 테마 등 상수.
 - [assets](./assets): 이미지 등 정적 자산.
