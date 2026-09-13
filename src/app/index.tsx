@@ -1,98 +1,97 @@
-import * as Device from 'expo-device';
-import { Platform, StyleSheet } from 'react-native';
+import { Platform, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-
-import { AnimatedIcon } from '@/components/animated-icon';
-import { HintRow } from '@/components/hint-row';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { WebBadge } from '@/components/web-badge';
-import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
-
-function getDevMenuHint() {
-  if (Platform.OS === 'web') {
-    return <ThemedText type="small">use browser devtools</ThemedText>;
-  }
-  if (Device.isDevice) {
-    return (
-      <ThemedText type="small">
-        shake device or press <ThemedText type="code">m</ThemedText> in terminal
-      </ThemedText>
-    );
-  }
-  const shortcut = Platform.OS === 'android' ? 'cmd+m (or ctrl+m)' : 'cmd+d';
-  return (
-    <ThemedText type="small">
-      press <ThemedText type="code">{shortcut}</ThemedText>
-    </ThemedText>
-  );
-}
+import { MaxContentWidth, Spacing } from '@/constants/theme';
+import { dummyArticles } from '@/data/articles';
+import { useTheme } from '@/hooks/use-theme';
 
 export default function HomeScreen() {
+  const theme = useTheme();
+
   return (
-    <ThemedView style={styles.container}>
-      <SafeAreaView style={styles.safeArea}>
-        <ThemedView style={styles.heroSection}>
-          <AnimatedIcon />
-          <ThemedText type="title" style={styles.title}>
-            Welcome to&nbsp;Expo
-          </ThemedText>
-        </ThemedView>
+    <SafeAreaView
+      style={[styles.screen, { backgroundColor: theme.background }]}
+      // NativeTabs가 Android의 하단, iOS의 스크롤 안전 영역을 처리한다.
+      edges={Platform.OS === 'android' ? ['top', 'left', 'right'] : []}
+    >
+      <ScrollView
+        style={styles.scrollView}
+        contentContainerStyle={styles.content}
+        contentInsetAdjustmentBehavior="automatic"
+      >
+        <View style={styles.heading}>
+          <Text
+            accessibilityRole="header"
+            style={[styles.title, { color: theme.text }]}
+          >
+            마실
+          </Text>
+          <Text style={[styles.meta, { color: theme.textSecondary }]}>
+            예시 콘텐츠
+          </Text>
+        </View>
 
-        <ThemedText type="code" style={styles.code}>
-          get started
-        </ThemedText>
-
-        <ThemedView type="backgroundElement" style={styles.stepContainer}>
-          <HintRow
-            title="Try editing"
-            hint={<ThemedText type="code">src/app/index.tsx</ThemedText>}
-          />
-          <HintRow title="Dev tools" hint={getDevMenuHint()} />
-          <HintRow
-            title="Fresh start"
-            hint={<ThemedText type="code">npm run reset-project</ThemedText>}
-          />
-        </ThemedView>
-
-        {Platform.OS === 'web' && <WebBadge />}
-      </SafeAreaView>
-    </ThemedView>
+        {dummyArticles.map((article) => (
+          <View
+            key={article.id}
+            style={[styles.article, { borderColor: theme.backgroundElement }]}
+          >
+            <Text
+              accessibilityRole="header"
+              style={[styles.articleTitle, { color: theme.text }]}
+            >
+              {article.title}
+            </Text>
+            <Text style={[styles.description, { color: theme.text }]}>
+              {article.description}
+            </Text>
+            <Text style={[styles.meta, { color: theme.textSecondary }]}>
+              {article.editorName}
+            </Text>
+          </View>
+        ))}
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  screen: {
     flex: 1,
-    justifyContent: 'center',
-    flexDirection: 'row',
   },
-  safeArea: {
+  scrollView: {
     flex: 1,
-    paddingHorizontal: Spacing.four,
-    alignItems: 'center',
-    gap: Spacing.three,
-    paddingBottom: BottomTabInset + Spacing.three,
+  },
+  content: {
+    width: '100%',
     maxWidth: MaxContentWidth,
+    alignSelf: 'center',
+    padding: Spacing.four,
+    gap: Spacing.five,
   },
-  heroSection: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    flex: 1,
-    paddingHorizontal: Spacing.four,
-    gap: Spacing.four,
+  heading: {
+    gap: Spacing.two,
   },
   title: {
-    textAlign: 'center',
+    fontSize: 28,
+    lineHeight: 36,
+    fontWeight: '600',
   },
-  code: {
-    textTransform: 'uppercase',
+  article: {
+    gap: Spacing.two,
+    paddingBottom: Spacing.four,
+    borderBottomWidth: StyleSheet.hairlineWidth,
   },
-  stepContainer: {
-    gap: Spacing.three,
-    alignSelf: 'stretch',
-    paddingHorizontal: Spacing.three,
-    paddingVertical: Spacing.four,
-    borderRadius: Spacing.four,
+  articleTitle: {
+    fontSize: 20,
+    lineHeight: 28,
+    fontWeight: '600',
+  },
+  description: {
+    fontSize: 16,
+    lineHeight: 24,
+  },
+  meta: {
+    fontSize: 14,
+    lineHeight: 20,
   },
 });
