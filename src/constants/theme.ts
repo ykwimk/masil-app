@@ -20,6 +20,9 @@ export const Colors = {
     backgroundElement: '#212225',
     backgroundSelected: '#2E3135',
     textSecondary: '#AAA9A4',
+    primary: '#6BC670',
+    surface: '#0D100D',
+    border: '#313630',
   },
 } as const;
 
