@@ -1,4 +1,10 @@
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import {
+  ScrollView,
+  StyleSheet,
+  Text,
+  useWindowDimensions,
+  View,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaxContentWidth, Spacing } from '@/constants/theme';
 import { dummyArticles } from '@/data/articles';
@@ -6,6 +12,7 @@ import { useTheme } from '@/hooks/use-theme';
 
 export default function HomeScreen() {
   const theme = useTheme();
+  const { fontScale } = useWindowDimensions();
 
   return (
     <SafeAreaView
@@ -19,12 +26,16 @@ export default function HomeScreen() {
       >
         <View style={styles.heading}>
           <Text
+            key={`home-title-${fontScale}`}
             accessibilityRole="header"
             style={[styles.title, { color: theme.text }]}
           >
             마실
           </Text>
-          <Text style={[styles.meta, { color: theme.textSecondary }]}>
+          <Text
+            key={`home-description-${fontScale}`}
+            style={[styles.meta, { color: theme.textSecondary }]}
+          >
             예시 콘텐츠
           </Text>
         </View>
@@ -35,15 +46,22 @@ export default function HomeScreen() {
             style={[styles.article, { borderColor: theme.backgroundElement }]}
           >
             <Text
+              key={`article-title-${fontScale}`}
               accessibilityRole="header"
               style={[styles.articleTitle, { color: theme.text }]}
             >
               {article.title}
             </Text>
-            <Text style={[styles.description, { color: theme.text }]}>
+            <Text
+              key={`article-description-${fontScale}`}
+              style={[styles.description, { color: theme.text }]}
+            >
               {article.description}
             </Text>
-            <Text style={[styles.meta, { color: theme.textSecondary }]}>
+            <Text
+              key={`article-editorName-${fontScale}`}
+              style={[styles.meta, { color: theme.textSecondary }]}
+            >
               {article.editorName}
             </Text>
           </View>
