@@ -1,10 +1,11 @@
-import { Tabs } from 'expo-router';
+import { Tabs, useTheme as useNavigationTheme } from 'expo-router';
 import { Image, useWindowDimensions } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from '@/hooks/use-theme';
 
 export default function AppTabs() {
   const theme = useTheme();
+  const { fonts } = useNavigationTheme();
   const insets = useSafeAreaInsets();
   const { fontScale } = useWindowDimensions();
   const extraHeight = Math.ceil(16 * Math.max(0, fontScale - 1));
@@ -22,9 +23,9 @@ export default function AppTabs() {
         tabBarInactiveTintColor: theme.textSecondary,
         tabBarLabelPosition: 'below-icon',
         tabBarLabelStyle: {
+          ...fonts.bold,
           fontSize: 12,
           lineHeight: 16,
-          fontWeight: '500',
           marginTop: 4,
         },
         tabBarAllowFontScaling: true,

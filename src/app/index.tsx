@@ -6,9 +6,11 @@ import {
   View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { isLoaded } from 'expo-font';
 import { MaxContentWidth, Spacing } from '@/constants/theme';
 import { dummyArticles } from '@/data/articles';
 import { useTheme } from '@/hooks/use-theme';
+import { ThemedText } from '@/components/themed-text';
 
 export default function HomeScreen() {
   const theme = useTheme();
@@ -25,45 +27,70 @@ export default function HomeScreen() {
         contentInsetAdjustmentBehavior="never"
       >
         <View style={styles.heading}>
-          <Text
+          <ThemedText
             key={`home-title-${fontScale}`}
             accessibilityRole="header"
-            style={[styles.title, { color: theme.text }]}
+            themeColor="text"
+            type="title"
+            style={styles.title}
           >
-            마실
-          </Text>
-          <Text
+            일과 삶 사이,{'\n'}
+            잠깐{' '}
+            <Text
+              style={{
+                color: theme.primary,
+                fontFamily: isLoaded('MulgyeolBold')
+                  ? 'MulgyeolBold'
+                  : undefined,
+                fontWeight: '700',
+              }}
+            >
+              마실.
+            </Text>
+          </ThemedText>
+          <ThemedText
             key={`home-description-${fontScale}`}
-            style={[styles.meta, { color: theme.textSecondary }]}
+            themeColor="textSecondary"
+            style={styles.homeDescription}
           >
-            예시 콘텐츠
-          </Text>
+            각자의 속도로 살아가는 우리의 이야기.
+          </ThemedText>
         </View>
-
+        <ThemedText
+          key={`sample-label-${fontScale}`}
+          themeColor="textSecondary"
+          style={styles.meta}
+        >
+          예시 콘텐츠
+        </ThemedText>
         {dummyArticles.map((article) => (
           <View
             key={article.id}
             style={[styles.article, { borderColor: theme.backgroundElement }]}
           >
-            <Text
+            <ThemedText
               key={`article-title-${fontScale}`}
               accessibilityRole="header"
-              style={[styles.articleTitle, { color: theme.text }]}
+              type="title"
+              themeColor="text"
+              style={styles.articleTitle}
             >
               {article.title}
-            </Text>
-            <Text
+            </ThemedText>
+            <ThemedText
               key={`article-description-${fontScale}`}
-              style={[styles.description, { color: theme.text }]}
+              themeColor="text"
+              style={styles.description}
             >
               {article.description}
-            </Text>
-            <Text
+            </ThemedText>
+            <ThemedText
               key={`article-editorName-${fontScale}`}
-              style={[styles.meta, { color: theme.textSecondary }]}
+              themeColor="textSecondary"
+              style={styles.meta}
             >
               {article.editorName}
-            </Text>
+            </ThemedText>
           </View>
         ))}
       </ScrollView>
@@ -86,12 +113,15 @@ const styles = StyleSheet.create({
     gap: Spacing.five,
   },
   heading: {
-    gap: Spacing.two,
+    gap: Spacing.three,
   },
   title: {
-    fontSize: 28,
-    lineHeight: 36,
-    fontWeight: '600',
+    fontSize: 32,
+    lineHeight: 42,
+  },
+  homeDescription: {
+    fontSize: 14,
+    lineHeight: 22,
   },
   article: {
     gap: Spacing.two,
@@ -101,7 +131,6 @@ const styles = StyleSheet.create({
   articleTitle: {
     fontSize: 20,
     lineHeight: 28,
-    fontWeight: '600',
   },
   description: {
     fontSize: 16,
