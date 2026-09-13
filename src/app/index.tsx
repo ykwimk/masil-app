@@ -1,4 +1,4 @@
-import { Platform, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaxContentWidth, Spacing } from '@/constants/theme';
 import { dummyArticles } from '@/data/articles';
@@ -10,13 +10,12 @@ export default function HomeScreen() {
   return (
     <SafeAreaView
       style={[styles.screen, { backgroundColor: theme.background }]}
-      // NativeTabs가 Android의 하단, iOS의 스크롤 안전 영역을 처리한다.
-      edges={Platform.OS === 'android' ? ['top', 'left', 'right'] : []}
+      edges={['top', 'left', 'right']}
     >
       <ScrollView
         style={styles.scrollView}
         contentContainerStyle={styles.content}
-        contentInsetAdjustmentBehavior="automatic"
+        contentInsetAdjustmentBehavior="never"
       >
         <View style={styles.heading}>
           <Text

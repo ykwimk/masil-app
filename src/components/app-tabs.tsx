@@ -1,23 +1,32 @@
-import { NativeTabs } from 'expo-router/unstable-native-tabs';
+import { Tabs } from 'expo-router';
+import { Image } from 'react-native';
 import { useTheme } from '@/hooks/use-theme';
 
 export default function AppTabs() {
   const theme = useTheme();
-  const colors = theme;
 
   return (
-    <NativeTabs
-      backgroundColor={colors.background}
-      indicatorColor={colors.backgroundElement}
-      labelStyle={{ selected: { color: colors.text } }}
+    <Tabs
+      screenOptions={{
+        headerShown: false,
+        tabBarStyle: { backgroundColor: theme.background },
+        tabBarActiveTintColor: theme.text,
+        tabBarInactiveTintColor: theme.textSecondary,
+      }}
     >
-      <NativeTabs.Trigger name="index">
-        <NativeTabs.Trigger.Label>Home</NativeTabs.Trigger.Label>
-        <NativeTabs.Trigger.Icon
-          src={require('@/assets/images/tabIcons/home.png')}
-          renderingMode="template"
-        />
-      </NativeTabs.Trigger>
-    </NativeTabs>
+      <Tabs.Screen
+        name="index"
+        options={{
+          title: '홈',
+          tabBarIcon: ({ size, color }) => (
+            <Image
+              source={require('@/assets/images/tabIcons/home.png')}
+              style={{ width: size, height: size }}
+              tintColor={color}
+            />
+          ),
+        }}
+      />
+    </Tabs>
   );
 }
