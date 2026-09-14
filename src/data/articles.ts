@@ -11,7 +11,7 @@ export interface ArticlePreview {
   };
 };
 
-// 시안용 예시 글이다. 화면에 표시할 때 예시 콘텐츠임을 안내한다.
+// 앱 개발과 화면 검증에 사용하는 더미 글이다. 실제 발행 콘텐츠가 아니다.
 // 배열의 첫 글을 홈의 대표 글로 사용하며, 순서나 제목을 바꿔도 ID는 유지한다.
 export const dummyArticles: ArticlePreview[] = [
   {
