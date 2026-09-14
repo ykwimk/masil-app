@@ -1,4 +1,5 @@
 import {
+  Image,
   ScrollView,
   StyleSheet,
   Text,
@@ -15,6 +16,8 @@ import { ThemedText } from '@/components/themed-text';
 export default function HomeScreen() {
   const theme = useTheme();
   const { fontScale } = useWindowDimensions();
+
+  const [featuredArticle, ...remainingArticles] = dummyArticles;
 
   return (
     <SafeAreaView
@@ -56,43 +59,111 @@ export default function HomeScreen() {
             각자의 속도로 살아가는 우리의 이야기.
           </ThemedText>
         </View>
-        <ThemedText
-          key={`sample-label-${fontScale}`}
-          themeColor="textSecondary"
-          style={styles.meta}
-        >
-          예시 콘텐츠
-        </ThemedText>
-        {dummyArticles.map((article) => (
-          <View
-            key={article.id}
-            style={[styles.article, { borderColor: theme.backgroundElement }]}
-          >
+        {featuredArticle ? (
+          <View style={styles.articleSection}>
             <ThemedText
-              key={`article-title-${fontScale}`}
+              key={`article-section-title-${fontScale}`}
               accessibilityRole="header"
+              themeColor="text"
               type="title"
-              themeColor="text"
-              style={styles.articleTitle}
+              style={styles.articleSectionTitle}
             >
-              {article.title}
+              먼저 읽어볼 이야기
             </ThemedText>
-            <ThemedText
-              key={`article-description-${fontScale}`}
-              themeColor="text"
-              style={styles.description}
+            {featuredArticle.image && (
+              <View style={styles.featuredImageContainer}>
+                <Image
+                  source={featuredArticle.image.source}
+                  alt={featuredArticle.image.alt}
+                  resizeMode="contain"
+                  style={{ width: 212, height: 212 }}
+                />
+              </View>
+            )}
+            <View
+              key={featuredArticle.id}
+              style={[styles.article, { borderColor: theme.backgroundElement }]}
             >
-              {article.description}
-            </ThemedText>
-            <ThemedText
-              key={`article-editorName-${fontScale}`}
-              themeColor="textSecondary"
-              style={styles.meta}
-            >
-              {article.editorName}
-            </ThemedText>
+              <ThemedText
+                key={`article-title-${fontScale}`}
+                accessibilityRole="header"
+                type="title"
+                themeColor="text"
+                style={styles.featuredArticleTitle}
+              >
+                {featuredArticle.title}
+              </ThemedText>
+              <ThemedText
+                key={`article-description-${fontScale}`}
+                themeColor="text"
+                style={styles.description}
+              >
+                {featuredArticle.description}
+              </ThemedText>
+              <ThemedText
+                key={`article-editorName-${fontScale}`}
+                themeColor="textSecondary"
+                style={styles.meta}
+              >
+                {featuredArticle.editorName}
+              </ThemedText>
+            </View>
           </View>
-        ))}
+        ) : (
+          <ThemedText
+            key={`empty-state-${fontScale}`}
+            themeColor="textSecondary"
+            style={styles.meta}
+          >
+            새로운 이야기를 준비하고 있어요.
+          </ThemedText>
+        )}
+        {remainingArticles.length > 0 && (
+          <View style={styles.articleSection}>
+            <ThemedText
+              key={`article-section-title-${fontScale}`}
+              accessibilityRole="header"
+              themeColor="text"
+              type="title"
+              style={styles.articleSectionTitle}
+            >
+              더 읽어볼 이야기
+            </ThemedText>
+            {remainingArticles.map((article) => (
+              <View
+                key={article.id}
+                style={[
+                  styles.article,
+                  { borderColor: theme.backgroundElement },
+                ]}
+              >
+                <ThemedText
+                  key={`article-title-${fontScale}`}
+                  accessibilityRole="header"
+                  type="title"
+                  themeColor="text"
+                  style={styles.articleTitle}
+                >
+                  {article.title}
+                </ThemedText>
+                <ThemedText
+                  key={`article-description-${fontScale}`}
+                  themeColor="text"
+                  style={styles.description}
+                >
+                  {article.description}
+                </ThemedText>
+                <ThemedText
+                  key={`article-editorName-${fontScale}`}
+                  themeColor="textSecondary"
+                  style={styles.meta}
+                >
+                  {article.editorName}
+                </ThemedText>
+              </View>
+            ))}
+          </View>
+        )}
       </ScrollView>
     </SafeAreaView>
   );
@@ -122,6 +193,25 @@ const styles = StyleSheet.create({
   homeDescription: {
     fontSize: 14,
     lineHeight: 22,
+  },
+  featuredArticleTitle: {
+    fontSize: 26,
+    lineHeight: 36,
+  },
+  featuredImageContainer: {
+    height: 178,
+    backgroundColor: '#DFE3D5',
+    borderRadius: 4,
+    justifyContent: 'center',
+    alignItems: 'center',
+    overflow: 'hidden',
+  },
+  articleSection: {
+    gap: Spacing.three,
+  },
+  articleSectionTitle: {
+    fontSize: 16,
+    lineHeight: 24,
   },
   article: {
     gap: Spacing.two,
