@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="dark">
+  <title>마실 · 이야기 읽기 시안 01</title>
+  <style>
+    @font-face { font-family: Pretendard; src: url("assets/Pretendard-Regular.woff2") format("woff2"); font-weight: 400; font-display: swap; }
+    @font-face { font-family: Pretendard; src: url("assets/Pretendard-SemiBold.woff2") format("woff2"); font-weight: 600; font-display: swap; }
+    @font-face { font-family: Mulgyeol; src: url("assets/TTHakgyoansimMulgyeolB.woff2") format("woff2"); font-weight: 700; font-display: swap; }
+    :root { --bg: #080a08; --surface: #0d100d; --text: #f2f0e9; --muted: #aaa9a4; --line: #313630; --green: #6bc670; }
+    * { box-sizing: border-box; }
+    [hidden] { display: none !important; }
+    html { font-size: 16px; }
+    body { margin: 0; background: var(--bg); color: var(--text); font-family: Pretendard, sans-serif; font-weight: 400; -webkit-font-smoothing: antialiased; }
+    button, a { -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+    button { font: inherit; cursor: pointer; }
+    a { color: inherit; text-decoration: none; }
+    button:focus-visible, a:focus-visible, .reader:focus-visible { outline: 2px solid var(--green); outline-offset: -3px; }
+    h1, h2, p, figure, blockquote { margin: 0; }
+    h1, h2 { font-weight: 600; }
+    svg { display: block; flex-shrink: 0; }
+    .review { display: none; }
+    .phone { width: 100%; max-width: 430px; height: 100dvh; margin-inline: auto; display: flex; flex-direction: column; overflow: hidden; background: var(--bg); }
+    .status { flex: none; display: flex; justify-content: space-between; align-items: center; height: 40px; padding: 8px 26px 0; font-size: 14px; font-weight: 600; }
+    .toolbar { flex: none; display: grid; grid-template-columns: 48px minmax(0, 1fr) 96px; align-items: center; min-height: 56px; padding: 0 12px 4px; border-bottom: 1px solid var(--line); }
+    .toolbar-title { padding-left: 48px; text-align: center; font-size: .9375rem; line-height: 1.5; font-weight: 600; overflow-wrap: anywhere; }
+    .toolbar-actions { display: flex; }
+    .icon-button { width: 48px; height: 48px; flex: none; display: inline-flex; justify-content: center; align-items: center; background: transparent; color: var(--text); border: 0; border-radius: 8px; }
+    .icon-button:active { background: #1b231b; }
+    .type-icon { font-size: 21px; letter-spacing: -.08em; font-weight: 600; }
+    .bookmark-solid { display: none; }
+    [aria-pressed="true"] { color: var(--green); }
+    [aria-pressed="true"] .bookmark-solid { display: block; }
+    [aria-pressed="true"] .bookmark-line { display: none; }
+    .reader { flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior-y: contain; scrollbar-width: none; }
+    .reader::-webkit-scrollbar { display: none; }
+    .article { padding: 32px 24px 0; word-break: keep-all; overflow-wrap: anywhere; }
+    .article h1 { font-size: 1.875rem; line-height: 1.38; letter-spacing: -.035em; text-wrap: pretty; }
+    .dek { margin-top: 16px; font-size: 1rem; line-height: 1.7; letter-spacing: -.015em; color: var(--muted); }
+    .byline { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 24px; font-size: .8125rem; line-height: 1.6; }
+    .byline::before { content: ""; width: 5px; height: 5px; flex: none; background: var(--green); border-radius: 50%; }
+    .cover { margin-top: 28px; }
+    .cover-art { height: 208px; display: grid; place-items: center; background: #dfe3d5; border-radius: 4px; overflow: hidden; }
+    .cover-art img { display: block; width: 252px; max-width: 100%; height: auto; }
+    figcaption { margin-top: 10px; font-size: .75rem; line-height: 1.7; color: var(--muted); }
+    .prose { --reading-size: 1.0625rem; margin-top: 36px; font-size: var(--reading-size); line-height: 1.8; letter-spacing: -.012em; }
+    .prose p + p { margin-top: 24px; }
+    .prose h2 { margin: 44px 0 18px; font-size: 1.2em; line-height: 1.5; letter-spacing: -.025em; }
+    .prose blockquote { margin: 32px 0; padding: 4px 0 4px 18px; border-left: 2px solid var(--green); font-size: 1.15em; line-height: 1.65; font-weight: 600; letter-spacing: -.025em; }
+    .closing { margin-top: 44px; padding: 32px 0 36px; border-top: 1px solid var(--line); }
+    .closing-kicker { color: var(--muted); font-size: .75rem; line-height: 1.6; }
+    .closing h2 { margin-top: 12px; font-size: 1.375rem; line-height: 1.5; letter-spacing: -.025em; }
+    .closing p { margin-top: 12px; color: var(--muted); font-size: .9375rem; line-height: 1.75; }
+    .save-button { display: flex; justify-content: center; align-items: center; gap: 10px; width: 100%; min-height: 52px; margin-top: 28px; padding: 12px 16px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); color: var(--text); font-size: .9375rem; font-weight: 600; line-height: 1.5; }
+    .save-button[aria-pressed="true"] { border-color: var(--green); color: var(--green); }
+    .save-button:active { background: #1b231b; }
+    .back-home { display: flex; width: fit-content; min-height: 48px; align-items: center; gap: 8px; margin: 12px auto 0; color: var(--muted); font-size: .875rem; line-height: 1.5; text-align: center; }
+    .signature { padding: 4px 0 36px; text-align: center; font-family: Mulgyeol, sans-serif; font-size: 1.875rem; font-weight: 700; color: var(--green); }
+    .bottom-inset { flex: none; min-height: max(20px, env(safe-area-inset-bottom)); display: flex; justify-content: center; align-items: end; padding-bottom: 6px; }
+    .bottom-inset::after { content: ""; width: 120px; height: 4px; border-radius: 10px; background: var(--text); opacity: .75; }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+    dialog { width: min(342px, calc(100vw - 32px)); max-height: calc(100dvh - 48px); overflow-y: auto; padding: 24px; border: 1px solid var(--line); border-radius: 16px; background: #141914; color: var(--text); }
+    dialog::backdrop { background: rgb(0 0 0 / .65); }
+    .dialog-heading { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+    .dialog-heading h2 { font-size: 1.125rem; line-height: 1.5; }
+    .dialog-heading .icon-button { margin-right: -12px; }
+    .size-options { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
+    .size-options button { flex: 1 1 70px; min-height: 48px; padding: 10px 6px; border: 1px solid var(--line); border-radius: 6px; color: var(--text); background: transparent; font-size: .875rem; line-height: 1.5; }
+    .size-options button[aria-pressed="true"] { color: var(--green); border-color: var(--green); background: #202d20; }
+    .settings-note { margin-top: 16px; color: var(--muted); font-size: .8125rem; line-height: 1.7; }
+    @media (max-width: 359px) { .article { padding-inline: 20px; } }
+    @media (min-width: 760px) {
+      body { background: #e5e7df; }
+      .stage { display: flex; align-items: flex-start; justify-content: center; gap: 80px; min-height: 100vh; padding: 40px 32px; }
+      .review { display: block; width: 290px; padding-top: 72px; color: #273328; }
+      .review .eyebrow { font-size: 12px; letter-spacing: .14em; font-weight: 600; }
+      .review h2 { margin-top: 24px; font-size: 32px; line-height: 1.4; letter-spacing: -.04em; }
+      .review p { margin-top: 20px; font-size: 15px; line-height: 1.8; }
+      .review ol { margin: 24px 0 0; padding-left: 18px; font-size: 14px; line-height: 1.9; }
+      .review li + li { margin-top: 8px; }
+      .review .spec { margin-top: 32px; padding-top: 20px; border-top: 1px solid #bbc2b7; font-size: 13px; }
+      .review a { text-decoration: underline; text-underline-offset: 3px; }
+      .phone { flex: none; width: 390px; height: 844px; margin: 0; border: 1px solid var(--line); border-radius: 30px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="stage">
+    <aside class="review" aria-label="시안 검토 안내">
+      <span class="eyebrow">MASIL / ARTICLE 01</span>
+      <h2>한 편의 이야기에<br>머무르는 시간.</h2>
+      <p>홈에서 발견한 글을 끝까지 편안하게 읽는 화면입니다. 마실의 색과 서체를 유지하고, 본문 주위에는 충분한 여백을 둡니다.</p>
+      <ol>
+        <li>안쪽 화면을 스크롤해 제목부터 글 끝까지 확인하세요.</li>
+        <li>상단의 ‘가’ 버튼으로 본문 크기를 바꿀 수 있습니다.</li>
+        <li>북마크와 글 끝의 저장 버튼은 같은 상태로 바뀝니다. 새로고침하면 초기화됩니다.</li>
+      </ol>
+      <p class="spec">검토용 초안 · 본문은 직접 작성한 더미 글입니다. 저장·읽기 설정은 브라우저 안의 시연이며 앱 기능이 아닙니다. 상태 표시줄과 하단 여백도 시각 표현입니다.</p>
+      <p><a href="home-tabs-v1.html">기존 홈 시안 보기 ↗</a></p>
+    </aside>
+    <main class="phone" aria-label="마실 이야기 읽기 시안">
+      <div class="status" aria-hidden="true">
+        <span>9:41</span>
+        <svg width="62" height="14" viewBox="0 0 62 14" fill="currentColor">
+          <path d="M0 10h3v4H0zm5-3h3v7H5zm5-3h3v10h-3zm5-3h3v13h-3z"/>
+          <path d="M22 4a11 11 0 0 1 15 0l-1.5 1.6a8.8 8.8 0 0 0-12 0zm3 3.3a6.6 6.6 0 0 1 9 0L32.5 9a4.4 4.4 0 0 0-6 0zm3 3.2a2.2 2.2 0 0 1 3 0L29.5 12z"/>
+          <rect x="42" y="2" width="17" height="10" rx="2" fill="none" stroke="currentColor"/><rect x="44" y="4" width="13" height="6" rx="1"/><path d="M60 5h2v4h-2z"/>
+        </svg>
+      </div>
+      <header class="toolbar">
+        <a class="icon-button" href="home-tabs-v1.html" aria-label="홈으로 돌아가기"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m14 5-7 7 7 7"/></svg></a>
+        <span class="toolbar-title">이야기</span>
+        <div class="toolbar-actions">
+          <button class="icon-button" id="open-settings" type="button" aria-label="읽기 설정" aria-haspopup="dialog"><span class="type-icon" aria-hidden="true">가</span></button>
+          <button class="icon-button" data-save type="button" aria-label="서재에 저장" aria-pressed="false">
+            <svg width="22" height="24" viewBox="0 0 24 24" aria-hidden="true"><path class="bookmark-line" d="M6 3.5h12v17L12 17l-6 3.5z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path class="bookmark-solid" d="M6 3.5h12v17L12 17l-6 3.5z" fill="currentColor"/></svg>
+          </button>
+        </div>
+      </header>
+      <div class="reader" id="reader" tabindex="0" role="region" aria-label="이야기 본문">
+        <!-- 원고·읽기 설정·저장은 시안 검토용이며 실제 발행·저장 데이터와 연결되지 않는다. -->
+        <article class="article" aria-labelledby="article-title">
+          <header>
+            <h1 id="article-title">잠깐 멈췄을 때,<br>비로소 보이는 것들</h1>
+            <p class="dek">바쁘게 일하던 사람이 자기만의 속도를 찾아가는 이야기. 쉼도 우리 일의 일부니까요.</p>
+            <p class="byline">마실 에디터</p>
+          </header>
+          <figure class="cover">
+            <div class="cover-art"><img src="assets/img-community-cutout.png" alt="커피를 들고 잠시 산책하는 사람의 일러스트" width="500" height="500"></div>
+            <figcaption>걸음을 늦추면, 익숙한 길도 조금 달라집니다.</figcaption>
+          </figure>
+          <div class="prose" id="prose">
+            <p>점심을 먹고 돌아오는 길에 조금 먼 골목으로 들어갔다. 늘 건너던 횡단보도 대신, 나무 그늘이 길게 드리운 쪽을 골랐다. 특별한 목적은 없었다. 사무실로 돌아가기 전, 십 분만 더 걷고 싶었다.</p>
+            <p>그 길에는 작은 세탁소와 오래된 빵집이 있었다. 몇 년을 오간 동네인데도 처음 보는 것 같았다. 새로 생긴 건 가게가 아니라, 주위를 둘러볼 마음의 자리였는지도 모른다.</p>
+            <h2>빈틈에도 쓸모가 있어야 할까</h2>
+            <p>한동안 쉬는 시간에도 할 일을 만들었다. 출근길에는 강의를 듣고, 점심시간에는 읽다 만 책을 펼쳤다. 주말에 아무 일정이 없으면 무언가 빠뜨린 것처럼 마음이 급해졌다.</p>
+            <p>배우는 일도, 책을 읽는 일도 좋아했다. 다만 어느 순간부터 좋아서 하는 일과 뒤처지지 않으려고 하는 일을 구분하기 어려워졌다. 휴식마저 잘 해내야 하는 과제가 되어 있었다.</p>
+            <blockquote>잠깐 멈춘다고 해서<br>지나온 시간이 사라지는 건 아니다.</blockquote>
+            <p>비워 둔 시간에 꼭 새로운 생각이 찾아오는 것은 아니다. 산책을 해도 해결되지 않는 문제가 있고, 푹 자고 일어나도 여전히 버거운 날이 있다. 그래도 쉬어도 된다는 사실은 달라지지 않는다.</p>
+            <p>쉬고 나서 더 잘 일할 수 있다는 이유가 없어도 괜찮다. 오늘의 내가 지쳤다는 것만으로도 잠시 멈출 이유는 충분하다. 그 단순한 말을 스스로에게 건네는 데 생각보다 오랜 시간이 걸렸다.</p>
+            <h2>다시, 몸의 속도로</h2>
+            <p>골목 끝에 다다랐을 때 손에 든 커피가 조금 식어 있었다. 걸음을 늦추고 나서야 어깨에 들어간 힘을 알아차렸다. 가방을 반대쪽으로 옮겨 메고, 숨을 길게 내쉬었다.</p>
+            <p>화면 속 일정은 늘 다음 칸으로 넘어가지만 몸은 그렇지 않다. 오래 앉아 있었다면 일어서고 싶고, 시끄러운 곳에 있었다면 조용해지고 싶다. 그 신호를 듣는 일부터 다시 시작해 보기로 했다.</p>
+            <p>처음 정한 것은 아주 작았다. 점심을 먹는 동안에는 휴대전화를 뒤집어 두기. 퇴근 후 첫 십 분은 내일의 할 일을 적지 않기. 모든 시간을 채우는 대신 하루에 한 군데쯤 빈칸을 남겨 두기.</p>
+            <p>며칠은 잘 지켰고, 며칠은 잊었다. 지키지 못한 날까지 실패라고 부르지는 않기로 했다. 생활을 바꾸는 일이 또 하나의 점수표가 되면, 나는 다시 서두르게 될 것 같았다.</p>
+            <h2>일상에 남겨둘 작은 여백</h2>
+            <p>그 뒤로도 바쁜 날은 계속됐다. 마감이 겹치면 점심을 급하게 먹었고, 집에 와서도 일 생각을 했다. 한 번의 산책으로 삶의 속도가 완전히 달라지지는 않았다.</p>
+            <p>달라진 게 있다면 돌아갈 길 하나를 알게 됐다는 것이다. 마음이 너무 앞서갈 때, 멀리 떠나지 않아도 잠깐 다른 골목을 걸을 수 있다는 것. 아무것도 정리되지 않은 채로도 다시 하루를 시작할 수 있다는 것.</p>
+            <p>내일 점심에는 빵집에 들러 볼까 한다. 문이 닫혀 있으면 그냥 지나쳐도 좋겠다. 이번에는 꼭 얻어 와야 할 것을 정하지 않고 나서 보려고 한다.</p>
+            <p>당신의 하루에도 그런 길이 하나 있었으면 좋겠다. 조금 돌아가도 괜찮고, 잠시 멈춰 서도 괜찮은 길. 늘 하던 일과 살아가는 일 사이에서, 온전히 자신의 속도로 걸을 수 있는 짧은 마실.</p>
+          </div>
+          <footer class="closing">
+            <span class="closing-kicker">이야기를 덮으며</span>
+            <h2>오늘은 어디에서<br>잠깐 쉬어가고 싶나요?</h2>
+            <p>마음에 남은 이야기는 서재에 담아 두세요.<br>다시 읽고 싶은 날, 천천히 꺼내 볼 수 있도록.</p>
+            <button class="save-button" data-save type="button" aria-label="서재에 저장" aria-pressed="false">
+              <svg width="20" height="22" viewBox="0 0 24 24" aria-hidden="true"><path class="bookmark-line" d="M6 3.5h12v17L12 17l-6 3.5z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path class="bookmark-solid" d="M6 3.5h12v17L12 17l-6 3.5z" fill="currentColor"/></svg>
+              <span data-save-label>서재에 담아두기</span>
+            </button>
+            <a class="back-home" href="home-tabs-v1.html">다른 이야기 만나기 <span aria-hidden="true">→</span></a>
+          </footer>
+          <div class="signature" aria-hidden="true">마실.</div>
+        </article>
+      </div>
+      <div class="bottom-inset" aria-hidden="true"></div>
+      <p class="sr-only" id="announcement" role="status" aria-live="polite"></p>
+    </main>
+  </div>
+  <dialog id="reading-settings" aria-labelledby="settings-title">
+    <div class="dialog-heading">
+      <h2 id="settings-title">읽기 설정</h2>
+      <button class="icon-button" id="close-settings" type="button" aria-label="읽기 설정 닫기"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg></button>
+    </div>
+    <div class="size-options" role="group" aria-label="본문 글자 크기">
+      <button type="button" data-size="1.0625" aria-pressed="true">기본</button>
+      <button type="button" data-size="1.1875" aria-pressed="false">크게</button>
+      <button type="button" data-size="1.3125" aria-pressed="false">더 크게</button>
+    </div>
+    <p class="settings-note">본문과 소제목, 인용문의 크기를 조절해요.</p>
+  </dialog>
+  <script>
+    // 검토용 메모리 상태만 사용한다. 앱 저장·WebView 통신 구현은 별도 단계다.
+    const saveButtons = document.querySelectorAll('[data-save]');
+    const announcement = document.querySelector('#announcement');
+    let saved = false;
+    saveButtons.forEach(button => button.addEventListener('click', () => {
+      saved = !saved;
+      saveButtons.forEach(control => {
+        control.setAttribute('aria-pressed', String(saved));
+        control.setAttribute('aria-label', saved ? '서재에서 저장 해제' : '서재에 저장');
+      });
+      document.querySelector('[data-save-label]').textContent = saved ? '서재에 담았어요' : '서재에 담아두기';
+      announcement.textContent = saved ? '서재에 담았어요.' : '저장을 해제했어요.';
+    }));
+    const dialog = document.querySelector('#reading-settings');
+    document.querySelector('#open-settings').addEventListener('click', () => dialog.showModal());
+    document.querySelector('#close-settings').addEventListener('click', () => dialog.close());
+    document.querySelectorAll('[data-size]').forEach(button => button.addEventListener('click', () => {
+      const reader = document.querySelector('#reader');
+      const prose = document.querySelector('#prose');
+      const blocks = Array.from(prose.children);
+      const top = reader.getBoundingClientRect().top;
+      const anchor = blocks.find(block => block.getBoundingClientRect().bottom > top);
+      const offset = anchor?.getBoundingClientRect().top;
+      prose.style.setProperty('--reading-size', `${button.dataset.size}rem`);
+      // 보고 있던 문단 위치를 유지한다. 네이티브 읽기 위치 복원을 검증하는 코드는 아니다.
+      if (anchor) reader.scrollTop += anchor.getBoundingClientRect().top - offset;
+      document.querySelectorAll('[data-size]').forEach(control => control.setAttribute('aria-pressed', String(control === button)));
+      announcement.textContent = `본문 글자 크기: ${button.textContent}`;
+    }));
+    const coverImage = document.querySelector('.cover img');
+    const hideCover = () => document.querySelector('.cover').hidden = true;
+    coverImage.addEventListener('error', hideCover);
+    if (coverImage.complete && coverImage.naturalWidth === 0) hideCover();
+  </script>
+</body>
+</html>
