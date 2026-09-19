@@ -1,15 +1,14 @@
 import { useEffect } from 'react';
-import { DarkTheme, ThemeProvider } from 'expo-router';
+import { DarkTheme, Stack, ThemeProvider } from 'expo-router';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'react-native';
 import { AnimatedSplashOverlay } from '@/components/animated-icon';
-import AppTabs from '@/components/app-tabs';
 import { useTheme } from '@/hooks/use-theme';
 
 SplashScreen.preventAutoHideAsync();
 
-export default function TabLayout() {
+export default function RootLayout() {
   const [fontsLoaded, fontsError] = useFonts({
     MulgyeolBold: require('@/assets/fonts/HakgyoansimMulgyeolOTFB.otf'),
     PretendardRegular: require('@/assets/fonts/Pretendard-Regular.otf'),
@@ -55,7 +54,9 @@ export default function TabLayout() {
   return (
     <ThemeProvider value={customTheme}>
       <AnimatedSplashOverlay />
-      <AppTabs />
+      <Stack>
+        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+      </Stack>
       <StatusBar barStyle="light-content" />
     </ThemeProvider>
   );
