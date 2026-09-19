@@ -1,5 +1,6 @@
 import {
   Image,
+  Pressable,
   ScrollView,
   StyleSheet,
   Text,
@@ -8,6 +9,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { isLoaded } from 'expo-font';
+import { Link } from 'expo-router';
 import { MaxContentWidth, Spacing } from '@/constants/theme';
 import { dummyArticles } from '@/data/articles';
 import { useTheme } from '@/hooks/use-theme';
@@ -130,37 +132,47 @@ export default function HomeScreen() {
               더 읽어볼 이야기
             </ThemedText>
             {remainingArticles.map((article) => (
-              <View
+              <Link
                 key={article.id}
-                style={[
-                  styles.article,
-                  { borderColor: theme.backgroundElement },
-                ]}
+                href={{
+                  pathname: '/articles/[id]',
+                  params: { id: article.id },
+                }}
+                asChild
               >
-                <ThemedText
-                  key={`article-title-${fontScale}`}
-                  accessibilityRole="header"
-                  type="title"
-                  themeColor="text"
-                  style={styles.articleTitle}
-                >
-                  {article.title}
-                </ThemedText>
-                <ThemedText
-                  key={`article-description-${fontScale}`}
-                  themeColor="text"
-                  style={styles.description}
-                >
-                  {article.description}
-                </ThemedText>
-                <ThemedText
-                  key={`article-editorName-${fontScale}`}
-                  themeColor="textSecondary"
-                  style={styles.meta}
-                >
-                  {article.editorName}
-                </ThemedText>
-              </View>
+                <Pressable>
+                  <View
+                    style={[
+                      styles.article,
+                      { borderColor: theme.backgroundElement },
+                    ]}
+                  >
+                    <ThemedText
+                      key={`article-title-${fontScale}`}
+                      accessibilityRole="header"
+                      type="title"
+                      themeColor="text"
+                      style={styles.articleTitle}
+                    >
+                      {article.title}
+                    </ThemedText>
+                    <ThemedText
+                      key={`article-description-${fontScale}`}
+                      themeColor="text"
+                      style={styles.description}
+                    >
+                      {article.description}
+                    </ThemedText>
+                    <ThemedText
+                      key={`article-editorName-${fontScale}`}
+                      themeColor="textSecondary"
+                      style={styles.meta}
+                    >
+                      {article.editorName}
+                    </ThemedText>
+                  </View>
+                </Pressable>
+              </Link>
             ))}
           </View>
         )}
