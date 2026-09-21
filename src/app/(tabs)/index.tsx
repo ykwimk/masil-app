@@ -72,44 +72,61 @@ export default function HomeScreen() {
             >
               먼저 읽어볼 이야기
             </ThemedText>
-            {featuredArticle.image && (
-              <View style={styles.featuredImageContainer}>
-                <Image
-                  source={featuredArticle.image.source}
-                  alt={featuredArticle.image.alt}
-                  resizeMode="contain"
-                  style={{ width: 212, height: 212 }}
-                />
-              </View>
-            )}
-            <View
-              key={featuredArticle.id}
-              style={[styles.article, { borderColor: theme.backgroundElement }]}
+            <Link
+              href={{
+                pathname: '/articles/[id]',
+                params: { id: featuredArticle.id },
+              }}
+              asChild
             >
-              <ThemedText
-                key={`article-title-${fontScale}`}
-                accessibilityRole="header"
-                type="title"
-                themeColor="text"
-                style={styles.featuredArticleTitle}
+              <Pressable
+                style={styles.articleSection}
+                accessibilityRole="link"
+                accessibilityLabel={`${featuredArticle.title} 읽기`}
               >
-                {featuredArticle.title}
-              </ThemedText>
-              <ThemedText
-                key={`article-description-${fontScale}`}
-                themeColor="text"
-                style={styles.description}
-              >
-                {featuredArticle.description}
-              </ThemedText>
-              <ThemedText
-                key={`article-editorName-${fontScale}`}
-                themeColor="textSecondary"
-                style={styles.meta}
-              >
-                {featuredArticle.editorName}
-              </ThemedText>
-            </View>
+                {featuredArticle.image && (
+                  <View style={styles.featuredImageContainer}>
+                    <Image
+                      source={featuredArticle.image.source}
+                      alt={featuredArticle.image.alt}
+                      resizeMode="contain"
+                      style={{ width: 212, height: 212 }}
+                    />
+                  </View>
+                )}
+                <View
+                  key={featuredArticle.id}
+                  style={[
+                    styles.article,
+                    { borderColor: theme.backgroundElement },
+                  ]}
+                >
+                  <ThemedText
+                    key={`article-title-${fontScale}`}
+                    accessibilityRole="header"
+                    type="title"
+                    themeColor="text"
+                    style={styles.featuredArticleTitle}
+                  >
+                    {featuredArticle.title}
+                  </ThemedText>
+                  <ThemedText
+                    key={`article-description-${fontScale}`}
+                    themeColor="text"
+                    style={styles.description}
+                  >
+                    {featuredArticle.description}
+                  </ThemedText>
+                  <ThemedText
+                    key={`article-editorName-${fontScale}`}
+                    themeColor="textSecondary"
+                    style={styles.meta}
+                  >
+                    {featuredArticle.editorName}
+                  </ThemedText>
+                </View>
+              </Pressable>
+            </Link>
           </View>
         ) : (
           <ThemedText

@@ -1,10 +1,12 @@
 import { Link, Stack, useLocalSearchParams } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import {
+  Image,
   Pressable,
   ScrollView,
   StyleSheet,
   useWindowDimensions,
+  View,
 } from 'react-native';
 import { dummyArticles } from '@/data/articles';
 import { useTheme } from '@/hooks/use-theme';
@@ -35,7 +37,7 @@ export default function ArticleScreen() {
         contentInsetAdjustmentBehavior="never"
       >
         {articleById ? (
-          <>
+          <View>
             <ThemedText
               key={`article-title-${fontScale}`}
               accessibilityRole="header"
@@ -47,23 +49,38 @@ export default function ArticleScreen() {
             </ThemedText>
             <ThemedText
               key={`article-description-${fontScale}`}
-              themeColor="text"
+              themeColor="textSecondary"
               style={styles.description}
             >
               {articleById.description}
             </ThemedText>
             <ThemedText
               key={`article-editorName-${fontScale}`}
-              themeColor="textSecondary"
+              themeColor="text"
               style={styles.meta}
             >
               {articleById.editorName}
             </ThemedText>
-          </>
+            {articleById.image && (
+              <View style={styles.featuredImageContainer}>
+                <Image
+                  source={articleById.image.source}
+                  alt={articleById.image.alt}
+                  style={{ width: 252, height: 252 }}
+                  resizeMode="contain"
+                />
+              </View>
+            )}
+          </View>
         ) : (
-          <Link href="/">
-            <Pressable>홈으로</Pressable>
-          </Link>
+          <>
+            <ThemedText>이야기를 찾을 수 없어요.</ThemedText>
+            <Link href="/" asChild>
+              <Pressable>
+                <ThemedText>홈으로</ThemedText>
+              </Pressable>
+            </Link>
+          </>
         )}
       </ScrollView>
     </SafeAreaView>
@@ -81,27 +98,32 @@ const styles = StyleSheet.create({
     width: '100%',
     maxWidth: MaxContentWidth,
     alignSelf: 'center',
-    padding: Spacing.four,
+    paddingTop: Spacing.five,
+    paddingHorizontal: Spacing.four,
+    paddingBottom: Spacing.four,
     gap: Spacing.five,
   },
   featuredArticleTitle: {
-    fontSize: 26,
-    lineHeight: 36,
+    fontSize: 30,
+    lineHeight: 42,
   },
   featuredImageContainer: {
-    height: 178,
+    height: 208,
     backgroundColor: '#DFE3D5',
     borderRadius: 4,
     justifyContent: 'center',
     alignItems: 'center',
     overflow: 'hidden',
+    marginTop: 28,
   },
   description: {
     fontSize: 16,
-    lineHeight: 24,
+    lineHeight: 28,
+    marginTop: Spacing.three,
   },
   meta: {
-    fontSize: 14,
-    lineHeight: 20,
+    fontSize: 13,
+    lineHeight: 21,
+    marginTop: Spacing.four,
   },
 });
