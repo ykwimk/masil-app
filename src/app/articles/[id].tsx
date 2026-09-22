@@ -12,6 +12,7 @@ import { dummyArticles } from '@/data/articles';
 import { useTheme } from '@/hooks/use-theme';
 import { ThemedText } from '@/components/themed-text';
 import { MaxContentWidth, Spacing } from '@/constants/theme';
+import ArticleBody from '@/components/article-body';
 
 export default function ArticleScreen() {
   const params = useLocalSearchParams();
@@ -71,6 +72,7 @@ export default function ArticleScreen() {
                 />
               </View>
             )}
+            <ArticleBody key={articleById.id} html={articleById.bodyHtml} />
           </View>
         ) : (
           <>
