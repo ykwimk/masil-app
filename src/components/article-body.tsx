@@ -30,9 +30,21 @@ export default function ArticleBody({ html }: ArticleBodyProps) {
           #article-body {
             display: flow-root;
             overflow-wrap: anywhere;
+            word-break: keep-all;
+            letter-spacing: -0.012em;
+          }
+          h2 {
+            margin: 44px 0 18px;
+            font-size: 1.2em;
+            font-weight: 600;
+            line-height: 1.5;
+            letter-spacing: -0.025em;
           }
           p {
-            margin: 0 0 24px;
+            margin: 0;
+          }
+          p + p {
+            margin-top: 24px;
           }
           blockquote {
             margin: 32px 0;
