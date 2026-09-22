@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useWindowDimensions, View } from 'react-native';
+import { StyleSheet, useWindowDimensions, View } from 'react-native';
 import { WebView, WebViewMessageEvent } from 'react-native-webview';
 import { useTheme } from '@/hooks/use-theme';
 
@@ -95,9 +95,9 @@ export default function ArticleBody({ html }: ArticleBodyProps) {
   };
 
   return (
-    <View style={{ height, marginTop: 36 }}>
+    <View style={{ height, marginTop: 36, backgroundColor: theme.background }}>
       <WebView
-        style={{ flex: 1 }}
+        style={{ flex: 1, backgroundColor: theme.background }}
         source={{ html: documentHtml }}
         originWhitelist={['*']}
         scrollEnabled={false}
@@ -106,6 +106,15 @@ export default function ArticleBody({ html }: ArticleBodyProps) {
         }
         injectedJavaScript={injectedJavascript}
         onMessage={onMessage}
+        startInLoadingState
+        renderLoading={() => (
+          <View
+            style={[
+              StyleSheet.absoluteFill,
+              { backgroundColor: theme.background },
+            ]}
+          />
+        )}
       />
     </View>
   );
