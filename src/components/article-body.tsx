@@ -1,6 +1,8 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { StyleSheet, useWindowDimensions, View } from 'react-native';
 import { WebView, WebViewMessageEvent } from 'react-native-webview';
+import { Asset } from 'expo-asset';
+import { File } from 'expo-file-system';
 import { useTheme } from '@/hooks/use-theme';
 
 interface ArticleBodyProps {
@@ -11,6 +13,60 @@ export default function ArticleBody({ html }: ArticleBodyProps) {
   const { fontScale } = useWindowDimensions();
   const theme = useTheme();
   const [height, setHeight] = useState(1);
+  const [fontsBase64, setFontsBase64] = useState<string[] | null>(null);
+
+  useEffect(() => {
+    let flag = true;
+
+    const loadFont = async () => {
+      try {
+        const assets = await Asset.loadAsync([
+          require('@/assets/fonts/Pretendard-Regular.woff2'),
+          require('@/assets/fonts/Pretendard-SemiBold.woff2'),
+        ]);
+
+        const localUris = assets.map((asset) => asset.localUri);
+        const loadedFonts: string[] = [];
+
+        for (const localUri of localUris) {
+          if (!localUri) {
+            throw new Error('Not found local Uri.');
+          }
+
+          const file = new File(localUri);
+          const fileBase64 = await file.base64();
+
+          loadedFonts.push(fileBase64);
+        }
+
+        if (flag) setFontsBase64(loadedFonts);
+      } catch (e) {
+        console.error(e);
+
+        if (flag) setFontsBase64([]);
+      }
+    };
+
+    loadFont();
+
+    return () => {
+      flag = false;
+    };
+  }, []);
+
+  const fontCss =
+    fontsBase64 && fontsBase64.length === 2
+      ? `@font-face {
+          font-family: "Pretendard";
+          font-weight: 400;
+          src: url("data:font/woff2;base64,${fontsBase64[0]}") format("woff2");
+        }
+        @font-face {
+          font-family: "Pretendard";
+          font-weight: 600;
+          src: url("data:font/woff2;base64,${fontsBase64[1]}") format("woff2");
+        }`
+      : '';
 
   const documentHtml = `
     <!doctype html>
@@ -19,11 +75,12 @@ export default function ArticleBody({ html }: ArticleBodyProps) {
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <style>
+          ${fontCss}
           body {
             margin: 0;
             background: ${theme.background};
             color: ${theme.text};
-            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: "Pretendard", -apple-system, BlinkMacSystemFont, sans-serif;
             font-size: ${17 * fontScale}px;
             line-height: 1.8;
           }
@@ -105,6 +162,14 @@ export default function ArticleBody({ html }: ArticleBodyProps) {
       console.error(e);
     }
   };
+
+  if (!fontsBase64) {
+    return (
+      <View
+        style={{ height, marginTop: 36, backgroundColor: theme.background }}
+      />
+    );
+  }
 
   return (
     <View style={{ height, marginTop: 36, backgroundColor: theme.background }}>
