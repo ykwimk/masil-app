@@ -8,6 +8,20 @@ module.exports = defineConfig([
   },
   expoConfig,
   {
+    files: ['src/**/*.{ts,tsx}'],
+    rules: {
+      '@typescript-eslint/no-require-imports': [
+        'warn',
+        {
+          allow: [
+            '\\.(aac|aiff|avif|bmp|caf|db|gif|heic|html|jpeg|jpg|json|m4a|m4v|mov|mp3|mp4|mpeg|mpg|otf|pdf|png|psd|svg|ttf|wav|webm|webp|xml|yaml|yml|zip)$',
+            '\\.woff2$',
+          ],
+        },
+      ],
+    },
+  },
+  {
     files: ['src/**/*.{js,jsx,ts,tsx}'],
     rules: {
       'import/order': [
